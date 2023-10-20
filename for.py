@@ -10,7 +10,7 @@ for i in range(n):
         print(a,end=' ')
         a+=1
     print()
-for z in range(n):
+for z in range(n):  
     v=1
     p-=2
     for q in range(z+2):
