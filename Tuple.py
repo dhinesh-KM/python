@@ -1,10 +1,7 @@
+thistuple = ("apple", "banana", "cherry")
+l=list(thistuple) 
+l.append("orange") 
 
-def display(mytuple):
-    for i in mytuple:
-        print(i)
+thistuple = tuple(l)
 
-
-#main
-myTuple=(1,2,3,4) 
-
-display(myTuple)
+print(thistuple)
