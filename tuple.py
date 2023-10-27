@@ -1,4 +1,7 @@
 thistuple = ("apple", "banana", "cherry")
-list=thistuple
-print(list)
+l=list(thistuple) 
+l.append("orange") 
+
+thistuple = tuple(l)
+
 print(thistuple)
