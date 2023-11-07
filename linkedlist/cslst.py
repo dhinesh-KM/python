@@ -34,7 +34,8 @@ class circular_sl:
         while d.next != self.head:
             d=d.next
             print(d.data,end=' -> ') 
-        print(d.next.data)   
+        #print(d.next.data)   
+        print()
     
     def at_beg(self,data):
         n=node(data)
