@@ -1,20 +1,48 @@
-class node:
+class Node:
     def __init__(self,data):
         self.left=None
         self.data=data
         self.right=None
-
-class tree: 
-    def createnode(self,new):
-        return node(new)
+        
+class bs_tree:
+    def insert(self,node,data):
+        if node == None:
+            return Node(data)
+        #k=t.search(node,data)
+        #if data == k:
+        #    return
+        if data < node.data:
+            node.left=self.insert(node.left,data)
+        else:
+            node.right=self.insert(node.right,data)
+        return node
+        
+    def create_bst(self):
+        node = None
+        while True:
+            u_i = input("Enter a number to insert into the BST (or 'q' to quit): ")
+            if u_i.lower() == 'q':
+                break
+            #try:
+            data = int(u_i)
+            node = self.insert(node, data)
+            #except ValueError:
+             #   print("Invalid input. Please enter a valid number or 'q' to quit.")
+        return node
     
     def minvalue(self,node):
+        if node is None:
+            print("There is no minimum value in list, because it is empty")
+            return
         c=node
         while c.left is not None:
             c=c.left
         return c.data
         
     def maxvalue(self,node):
+        if node is None:
+            print("There is no minimum value in list, because it is empty")
+            return
         c=node
         while c.right is not None:
             c=c.right
@@ -29,18 +57,11 @@ class tree:
         else:
             return self.search(node.right,data)
                  
-    def insert(self,node,data):
-        if node == None:
-            return self.createnode(data)
-        if data<node.data:
-            node.left=self.insert(node.left,data)
-        else:
-            node.right=self.insert(node.right,data)
-        return node
     
     def delete(self,node,data):
-        if node == None:
+        if node is None:
             print("nothing to delete,list is empty")
+            return
         if data < node.data:
             node.left=self.delete(node.left,data)
         elif data > node.data:
@@ -91,13 +112,8 @@ class tree:
             if node.right != None:
                 q.append(node.right)
 
-t=tree()
-l=[5,2,10,7,15,12,20,30,6,8]
-n=len(l)
-root=t.createnode(5)
-for i in range(1,n):
-    t.insert(root,l[i]) 
-t.insert(root,100)   
+t=bs_tree()
+root=t.create_bst()
 t.preorder_traverse(root)
 print()
 t.inorder_traverse(root)
@@ -109,14 +125,14 @@ t.postorder_traverse(root)
 print()
 data=100
 k=t.search(root,data)
-print(k)
+#print(k)
 if k:
     print(f"search element  {data} exist")
 else:
     print(f"search element  {data} not exist")
-t.delete(root,5)
-t.levelorder_traverse(root)
-print()
+    
 print(t.minvalue(root))
 print(t.maxvalue(root))
 
+t.delete(root,5)
+t.levelorder_traverse(root)
