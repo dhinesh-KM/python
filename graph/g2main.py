@@ -19,4 +19,6 @@ g.addedge('e','d')
 
 g.print_a_matrix()
 print()
-g.bfs('b')
+g.bfs('a')
+print()
+g.dfs('b')

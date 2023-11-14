@@ -41,18 +41,20 @@ class graph:
                 if  not visited[i] and self.a_matrix[current_vertex][i]==1:
                     queue.append(i)
                     visited[i]=True
-                    
-    def dfs(self,start_vertex):
-        visited=set()
-        self.dfs1(start_vertex,visited)
-        
-    def dfs1(self,start_vertex,visited): 
-        index_s=self.vertex[start_vertex]
-        visited.add(index_s)
-        print(start_vertex,end=' ')
-        for i in self.a_list[start_vertex]:
-            if i not in visited:
-                self.dfs1(i,visited)
+    
+    def dfs(self, start_vertex):
+        visited = [False] * self.n_vertex
+        self.dfs_r(self.vertex[start_vertex], visited)
+
+    def dfs_r(self, vertex_index, visited):
+        visited[vertex_index] = True
+        print(list(self.vertex.keys())[list(self.vertex.values()).index(vertex_index)], end=" ")
+
+        for neighbor in range(self.n_vertex):
+            if self.a_matrix[vertex_index][neighbor] == 1 and not visited[neighbor]:
+                self.dfs_r(neighbor, visited)
+    
+    
              
     
         
