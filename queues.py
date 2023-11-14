@@ -1,5 +1,4 @@
 from collections import deque
-
 class queue:
     def __init__(self,msize):
         self.queue = deque()
