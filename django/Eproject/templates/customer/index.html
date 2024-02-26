@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventory</title>
+</head>
+<body>
+    {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+    <h1>Inventory Management</h1>
+    
+    <a href="all">  <button>Display All</button> </a> <br><br>
+    
+        
+        <form  action="display/">
+          
+            <label>Enter product ID to search: </label>
+            <input type="number" name="pk">
+            <button type="submit">Display</button>
+        </form>
+
+        <a href="order">  <button>Order</button> </a> <br><br>
+       
+        
+   
+    
+</body>
+</html>

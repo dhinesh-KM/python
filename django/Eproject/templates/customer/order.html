@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Form</title>
+</head>
+<body>
+    
+    <h1>Product Form</h1>
+    <form  method="post">
+        {% csrf_token %}
+        <label for="product_name">Product Name:</label>
+        <input type="text" id="product_name" name="product_name" required><br><br>
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" min="1" required><br><br>
+        <button type="submit" name="s">Submit</button>
+        <!--<a href="/customer/order">  <button name="a">Add more</button> </a> <br><br>-->
+    </form>
+    
+    <!--<form method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        {% for form in formset %}
+            {{ form.as_p }}
+        {% endfor %}
+        <button type="submit">Add More</button>
+        <button type="submit">Submit</button>
+    </form>-->
+    
+</body>
+</html>
