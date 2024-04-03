@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from bson.errors import InvalidId
 from rest_framework.exceptions import APIException
+from blogs import exceptions
 
 
 
@@ -36,14 +37,13 @@ class CommentSerializer(serializers.ModelSerializer):
         post = validated_data.pop('post_id') 
         try:
             post = Post.objects.get(pk=ObjectId(post))
-            print(True)
+            #print(True)
             
         except Post.DoesNotExist:
-            raise APIException({'error': True, 'msg': 'comment  not found ' })
+            raise exceptions.Not_Found(name="comment")
         
         except InvalidId:
-            raise APIException({'error': True, 'msg': f'Invalid post_id ' })
-        
+            raise exceptions.Invalid_Id(pk = self.kwargs['pk'])
         
         comment = Comment.objects.create(post=post, **validated_data)
         return comment
@@ -55,8 +55,12 @@ class CommentSerializer(serializers.ModelSerializer):
         if post_id:
             try:
                 post = Post.objects.get(pk=ObjectId(post_id))
-            except (Post.DoesNotExist, InvalidId):
-                raise serializers.ValidationError({'error': 'Post not found'})
+                
+            except Post.DoesNotExist:
+                raise exceptions.Not_Found(name="post")
+            
+            except InvalidId:
+                raise exceptions.Invalid_Id(pk = self.kwargs['pk'])
             
             instance.post = post
         instance.comment = validated_data.get('comment', instance.comment)

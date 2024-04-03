@@ -7,9 +7,8 @@ from bson import ObjectId
 from django.core.exceptions import ObjectDoesNotExist
 from bson.errors import InvalidId
 from .permissions import IsAuthorOrReadOnly,IsUserOrReadOnly
-from rest_framework.exceptions import NotFound
-from rest_framework.exceptions import APIException
 from django.shortcuts import get_object_or_404
+from blogs import exceptions
 # Create your views here.
 
 class create_post(generics.CreateAPIView):
@@ -20,7 +19,7 @@ class create_post(generics.CreateAPIView):
         serializer.save(author = self.request.user)
     
     def create(self, request, *args, **kwargs):
-        print("Current user:", request.user)
+        #print("Current user:", request.user)
         response =  super().create(request, *args, **kwargs)
         response = {'error': False,'msg': 'Post created successfully','data': response.data}
         return Response(response, status=status.HTTP_201_CREATED)
@@ -51,10 +50,11 @@ class gup_post(generics.RetrieveUpdateDestroyAPIView):
             return obj
         
         except ObjectDoesNotExist:
-            raise APIException({'error': True, 'msg': 'Post  not found ' })
+            raise exceptions.Not_Found(name = "post")
         
         except InvalidId:
-            raise APIException({'error': True, 'msg': f'Invalid post Id {self.kwargs['pk']} ' })
+            raise exceptions.Invalid_Id(pk = self.kwargs['pk'])
+
         
     def retrieve(self, request, *args, **kwargs):
         response = super().retrieve(request, *args, **kwargs)
@@ -108,18 +108,19 @@ class get_comment(generics.ListAPIView):
             queryset = c.comment_set.all()
             if not queryset.exists():
                 return Response({'detail': 'there is no comment exist for this comment'}, status= status.HTTP_200_OK)
-            page = self.paginate_queryset(queryset)
+            '''page = self.paginate_queryset(queryset)
             print('page',page)
             if page is not None:
                 serializer = self.get_serializer(page, many=True)
-                return self.get_paginated_response(serializer.data)
+                return self.get_paginated_response(serializer.data)'''
             serializer = self.get_serializer(queryset, many=True)
             return Response({'error': False, 'data': serializer.data}, status= status.HTTP_200_OK)
         
-        except (ObjectDoesNotExist):
-            return APIException({'error': True, 'msg': 'Post  not found' }, status= status.HTTP_404_NOT_FOUND)
-        except (InvalidId):
-            return APIException({'error': True, 'msg': f'Invalid Post id {post_id} ' }, status= status.HTTP_404_NOT_FOUND)
+        except ObjectDoesNotExist:
+            raise exceptions.Not_Found(name="post")
+        
+        except InvalidId:
+            raise exceptions.Invalid_Id(pk = self.kwargs['pk'])
             
     
     
@@ -136,12 +137,12 @@ class gup_comment(generics.RetrieveUpdateDestroyAPIView):
             obj = queryset.get(pk=ObjectId(self.kwargs['pk']))
             self.check_object_permissions(self.request, obj)
             return obj
-        
         except ObjectDoesNotExist:
-            raise APIException({'error': True, 'msg': 'comment  not found ' })
+            raise exceptions.Not_Found(name="comment")
         
         except InvalidId:
-            raise APIException({'error': True, 'msg': f'Invalid comment Id {self.kwargs['pk']} ' })
+            raise exceptions.Invalid_Id(pk = self.kwargs['pk'])
+        
         
     def retrieve(self, request, *args, **kwargs):
         response = super().retrieve(request, *args, **kwargs)
