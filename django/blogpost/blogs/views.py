@@ -12,11 +12,11 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie, vary_on_headers
 from blogpost import custom_exceptions
 from django.core.cache import cache
-import redis
+
 
 # Create your views here.
 
-redis_instance = redis.StrictRedis(host='127.0.0.1', port=6379, db=1)
+
 
 class create_post(generics.CreateAPIView):
     serializer_class = PostSerializer
