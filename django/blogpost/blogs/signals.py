@@ -5,14 +5,16 @@ from .models import Comment,Post
 
 @receiver([post_save,post_delete], sender=Comment)
 def update_comments_cache(sender, instance, **kwargs):
-    # Invalidate the cache for all comments
     cache.delete('All_comments')
     
 
     
 @receiver([post_save,post_delete], sender=Post)
 def update_comments_cache(sender, instance, **kwargs):
-    # Invalidate the cache for all comments
     cache.delete('All_posts')
+    
+@receiver([post_save,post_delete], sender=Comment)
+def update_comments_cache(sender, instance, **kwargs):
+    cache.delete_pattern('pk*')
     
 

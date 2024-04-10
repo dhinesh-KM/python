@@ -127,13 +127,13 @@ class get_comment(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         post_id = self.request.query_params.get('pk') #self.kwargs['pk']
         cache_key = 'pk' + post_id
-
+        print("c",cache_key)
         if cache_key in cache:
             print("redis")
             queryset = cache.get(cache_key)
             return Response(queryset)
         else:
-            print('db')
+            print('no cache')
             print(post_id)
             try: 
                 c = self.queryset.get( pk = ObjectId(post_id))
@@ -147,7 +147,7 @@ class get_comment(generics.ListAPIView):
                 #    serializer = self.get_serializer(page, many=True)
                 #   return self.get_paginated_response(serializer.data)'''
                 serializer = self.get_serializer(comments, many=True)
-                cache.set(cache_key,serializer.data,timeout=30)
+                cache.set(cache_key,serializer.data,timeout=60*5)
                 return Response({'error': False, 'data': serializer.data}, status= status.HTTP_200_OK)
             
             except ObjectDoesNotExist:
