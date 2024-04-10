@@ -151,6 +151,8 @@ REST_FRAMEWORK = {
         
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    #'EXCEPTION_HANDLER': 'blogpost.custom_exceptions.custom_exception_handler',
+
     
 }
 
@@ -161,3 +163,14 @@ SIMPLE_JWT = {
     'USER_ID_FIELD': '_id',
 }
 
+#APPEND_SLASH= False
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1", # Local Link provided by the redis-server command
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}

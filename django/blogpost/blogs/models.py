@@ -1,3 +1,4 @@
+from typing import Iterable
 from django.db import models
 from djongo import models
 from users.models import CustomUser
@@ -29,3 +30,4 @@ class Comment(models.Model):
     
     def __str__(self) :
         return f"{self.post.title}"
+    

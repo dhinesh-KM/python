@@ -1,5 +1,5 @@
 from rest_framework import generics,permissions
-from .serializer import RegisterSerializer
+from .serializer import RegisterSerializer#LoginSerializer
 from .models import CustomUser
 from rest_framework.response import Response
 from rest_framework import status
@@ -88,8 +88,5 @@ class LoginView(TokenObtainPairView):
     
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = CustomUser.objects.get(username = request.data['username'])
-        token = serializer.get_token(user)
-        data = { 'token': str(token.access_token), 'refresh token': str(serializer.validated_data['refresh']) , 'email': user.email, 'username': user.username, 'firstname': user.first_name, 'lastname' : user.last_name}
-        return Response({ 'error':False, 'data': data })
+        data = serializer.validate(request.data)
+        return Response({ 'error':False, 'data': data }, status=status.HTTP_200_OK)
