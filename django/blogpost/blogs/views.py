@@ -13,10 +13,7 @@ from django.views.decorators.vary import vary_on_cookie, vary_on_headers
 from blogpost import custom_exceptions
 from django.core.cache import cache
 
-
 # Create your views here.
-
-
 
 class create_post(generics.CreateAPIView):
     serializer_class = PostSerializer

@@ -16,5 +16,5 @@ def update_comments_cache(sender, instance, **kwargs):
 @receiver([post_save,post_delete], sender=Comment)
 def update_comments_cache(sender, instance, **kwargs):
     cache.delete_pattern('pk*')
-    
+       
 
